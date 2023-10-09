@@ -1,0 +1,21 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+import express from "express";
+import connection from "./database/db.connection.js";
+import globalErrorHandler from "./src/utils/globalErrorHandler.js";
+import authRouter from "./src/modules/auth/auth.routes.js";
+import userRouter from "./src/modules/user/user.routes.js";
+import postRouter from "./src/modules/post/post.routes.js";
+import commentRouter from "./src/modules/comment/comment.routes.js";
+const app = express();
+const port = 3000;
+app.use(express.json());
+connection();
+app.get("/", (req, res) => res.send("Hello World!"));
+
+app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/post", postRouter);
+app.use("/api/v1/comment", commentRouter);
+app.use(globalErrorHandler);
+app.listen(port, () => console.log(`Example app listening on port ${port}!`));
